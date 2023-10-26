@@ -1,0 +1,147 @@
+<!-- transaction.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <title>Formulaire de Transaction</title>
+  </head>
+  <body>
+    <!-- Barre de navigation (copiez-la depuis le code précédent) -->
+
+    <div class="container mt-5">
+      <!-- Formulaire d'ajout de transaction -->
+      <div id="transaction-form" class="form-container">
+        <h2>Ajouter une Transaction</h2>
+        <div class="card">
+          <div class="card-body">
+            <form id="transaction-form">
+              <div class="form-group">
+                <label for="date-transaction">Date de la transaction</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="date-transaction"
+                  name="date-transaction"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="type-transaction">Type de transaction</label>
+                <select
+                  class="form-control"
+                  id="type-transaction"
+                  name="type-transaction"
+                  required
+                >
+                  <option value="depense">Dépense</option>
+                  <option value="revenu">Revenu</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="montant-transaction"
+                  >Montant de la transaction</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="montant-transaction"
+                  name="montant-transaction"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="description-transaction"
+                  >Description de la transaction</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="description-transaction"
+                  name="description-transaction"
+                />
+              </div>
+              <button type="submit" class="btn btn-success btn-block">
+                Ajouter la transaction
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center my-5">
+      <a href="index.html" class="btn btn-success">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i> Gestion budget
+      </a>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+      // Gestion du formulaire d'ajout de transaction
+      $("#transaction-form").submit(function (event) {
+        event.preventDefault();
+
+        // Récupérer les données du formulaire
+        let dateTransaction = $("#date-transaction").val();
+        let typeTransaction = $("#type-transaction").val();
+        let montantTransaction = parseFloat($("#montant-transaction").val());
+        let descriptionTransaction = $("#description-transaction").val();
+
+        // Valider les données (ajoutez des vérifications plus détaillées)
+        if (dateTransaction === "" || isNaN(montantTransaction)) {
+          alert("Veuillez remplir tous les champs correctement.");
+          return;
+        }
+
+        // Créer un objet pour la transaction
+        let transaction = {
+          date: dateTransaction,
+          type: typeTransaction,
+          montant: montantTransaction,
+          description: descriptionTransaction,
+        };
+
+        // Ajouter la transaction à la base de données des transactions
+        transactionsDB.push(transaction);
+
+        // Mettre à jour le budget en fonction du type de transaction
+        if (typeTransaction === "depense") {
+          // Soustraire le montant de la dépense du budget
+          budgetDB["utilisateur_actuel"] -= montantTransaction;
+        } else if (typeTransaction === "revenu") {
+          // Ajouter le montant du revenu au budget
+          budgetDB["utilisateur_actuel"] += montantTransaction;
+        }
+
+        // Réinitialiser le formulaire
+        $("#transaction-form")[0].reset();
+
+        // Vérifier si le montant restant est égal ou supérieur à 40% du budget
+        let budgetActuel = budgetDB["utilisateur_actuel"];
+        let budgetInitial = 1500; // Remplacez ceci par la valeur initiale du budget
+        let seuilMinimum = 0.4 * budgetInitial;
+
+        if (budgetActuel >= seuilMinimum) {
+          alert(
+            "Transaction ajoutée avec succès. Le montant restant est supérieur à 40% du budget."
+          );
+        } else {
+          alert(
+            "Transaction ajoutée avec succès. Attention : Le montant restant est inférieur à 40% du budget."
+          );
+        }
+      });
+    </script>
+  </body>
+</html>

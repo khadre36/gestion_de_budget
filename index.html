@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestion de Budget</title>
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div id="sidebar">
+        <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
+        <a href="transaction.html"><i class="fas fa-user"></i> Transaction</a>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-lg-6">
+          <div id="budget-form" class="form-container">
+            <h2>Gestion du Budget</h2>
+            <div class="card">
+              <div class="card-body">
+                <form id="budget-form">
+                  <div class="form-group">
+                    <label for="budget">Donner un budget</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="budget"
+                      name="budget"
+                      required
+                    />
+                  </div>
+                  <button type="submit" class="btn btn-success btn-block">
+                    Enregistrer le budget
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-lg-6">
+          <div id="budget-actuel" class="form-container">
+            <h2>Budget Actuel</h2>
+            <div class="card">
+              <div class="card-body">
+                <p id="budget-value">
+                  Votre budget actuel est : <span id="budget-amount"></span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center my-5">
+      <a href="transaction.html" class="btn btn-success">
+        <i class="fa fa-plus"></i> Ajouter Transaction
+      </a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+      $("#budget-form").submit(function (event) {
+        event.preventDefault();
+
+        let budgetValue = parseFloat($("#budget").val());
+
+        if (isNaN(budgetValue) || budgetValue <= 0) {
+          alert("Veuillez entrer une valeur de budget valide.");
+          return;
+        }
+
+        budgetDB["utilisateur_actuel"] = budgetValue;
+
+        $("#budget-form")[0].reset();
+
+        alert("Budget enregistré avec succès.");
+      });
+      $("#transaction-form").submit(function (event) {
+        event.preventDefault();
+
+        let typeTransaction = $("#type-transaction").val();
+        let montantTransaction = parseFloat($("#montant-transaction").val());
+
+        if (isNaN(montantTransaction)) {
+          alert("Veuillez entrer un montant valide pour la transaction.");
+          return;
+        }
+
+        // Mettre à jour le budget en fonction du type de transaction
+        if (typeTransaction === "depense") {
+          if ("utilisateur_actuel" in budgetDB) {
+            budgetDB["utilisateur_actuel"] -= montantTransaction;
+          }
+        } else if (typeTransaction === "revenu") {
+          if ("utilisateur_actuel" in budgetDB) {
+            budgetDB["utilisateur_actuel"] += montantTransaction;
+          }
+        }
+
+        $("#transaction-form")[0].reset();
+
+        // Appel de displayBudget après chaque transaction
+        displayBudget();
+      });
+    </script>
+  </body>
+</html>

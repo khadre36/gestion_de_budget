@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestion de Budget</title>
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-lg-6">
+          <div id="connexion" class="form-container">
+            <h2 class="text-center">Connexion</h2>
+            <div class="card">
+              <div class="card-body">
+                <form id="connexion-form">
+                  <div class="form-group">
+                    <label for="email-connexion">Email</label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="email-connexion"
+                      name="email-connexion"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="motdepasse-connexion">Mot de passe</label>
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="motdepasse-connexion"
+                      name="motdepasse-connexion"
+                      required
+                    />
+                  </div>
+                  <button type="submit" class="btn btn-success btn-block">
+                    Se connecter
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <img src="images/c.png" class="img-fluid" alt="image1" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6">
+          <img src="images/a.png" class="img-fluid" alt="image1" />
+        </div>
+        <div class="col-lg-6">
+          <div id="inscription" class="form-container">
+            <h2 class="text-center">Inscription</h2>
+            <div class="card">
+              <div class="card-body">
+                <form id="inscription-form">
+                  <div class="form-group">
+                    <label for="nom">Nom</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="nom"
+                      name="nom"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="prenom">Prénom</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="prenom"
+                      name="prenom"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="email">Email</label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="email"
+                      name="email"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="motdepasse">Mot de passe</label>
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="motdepasse"
+                      name="motdepasse"
+                      required
+                    />
+                  </div>
+                  <button type="submit" class="btn btn-success btn-block">
+                    S'inscrire
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        let usersDB = [];
+
+        $("#inscription-form").submit(function (event) {
+          event.preventDefault();
+
+          let nom = $("#nom").val();
+          let prenom = $("#prenom").val();
+          let email = $("#email").val();
+          let motdepasse = $("#motdepasse").val();
+
+          if (
+            nom === "" ||
+            prenom === "" ||
+            email === "" ||
+            motdepasse === ""
+          ) {
+            alert("Veuillez remplir tous les champs.");
+            return;
+          }
+
+          let utilisateur = {
+            nom: nom,
+            prenom: prenom,
+            email: email,
+            motdepasse: motdepasse,
+          };
+
+          usersDB.push(utilisateur);
+
+          $("#inscription-form")[0].reset();
+
+          alert("Inscription réussie.");
+        });
+
+        $("#connexion-form").submit(function (event) {
+          event.preventDefault();
+
+          let email = $("#email-connexion").val();
+          let motdepasse = $("#motdepasse-connexion").val();
+
+          if (email === "" || motdepasse === "") {
+            alert("Veuillez entrer votre email et votre mot de passe.");
+            return;
+          }
+
+          if (
+            email === "khadregueye36@gmail.com" &&
+            motdepasse === "passer123"
+          ) {
+            alert("Connexion réussie.");
+
+            window.location.href = "index.html";
+          } else {
+            alert("Email ou mot de passe incorrect.");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

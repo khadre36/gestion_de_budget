@@ -1,0 +1,27 @@
+
+        /* Personnalisation du style du sidebar */
+        #sidebar {
+            height: 100%; /* Pleine hauteur du viewport */
+            width: 170px; /* Largeur du sidebar */
+            position: fixed; /* Barre latérale fixe */
+            top: 0;
+            left: 0;
+            z-index: 1; /* Placez-le au-dessus du contenu principal */
+            background-color: #097f11; /* Couleur de fond du sidebar */
+            padding-top: 20px; /* Espace en haut du sidebar */
+        }
+
+        #sidebar a {
+            padding: 10px 15px; /* Espacement pour chaque élément de menu */
+            text-decoration: none;
+            font-size: 20px; /* Taille de la police pour les icônes */
+            color: white; /* Couleur du texte du menu */
+            display: block; /* Fait de chaque lien un bloc distinct */
+        }
+
+        #sidebar a:hover {
+            background-color: #555; /* Couleur de fond au survol */
+        }
+    h2{
+      color: #097f11;
+    }
